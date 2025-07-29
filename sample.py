@@ -4,9 +4,6 @@
 
 
 
-
-
-
 num = 29
 flag = False
 
