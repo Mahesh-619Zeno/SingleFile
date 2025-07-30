@@ -4,8 +4,8 @@
 
 
 
-num = 29
-flag = False
+number = 29
+is_condition_met = False
 
 if num == 0 or num == 1:
     print(num, "is not a prime number")
