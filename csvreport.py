@@ -1,13 +1,13 @@
 import csv
 
-"""def read_sales(file_path):
+def read_sales(file_path):
     sales = []
     with open(file_path, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             row['amount'] = float(row['amount'])
             sales.append(row)
-    return sales"""
+    return sales
 
 def generate_report(sales):
     total = sum(s['amount'] for s in sales)
