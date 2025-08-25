@@ -1,5 +1,4 @@
 """This is a program to check if a number is prime or not"""
-
 number = 29
 is_condition_met = False
 
