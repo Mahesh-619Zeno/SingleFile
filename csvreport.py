@@ -19,5 +19,5 @@ def generate_report(sales):
         print(f"{product}: ${amount:.2f}")
 
 if __name__ == "__main__":
-    data = read_sales("sales.csv")
-    generate_report(data)
+    sales_data = read_sales("sales.csv")
+    generate_report(sales_data)
