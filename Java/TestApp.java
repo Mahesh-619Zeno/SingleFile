@@ -3,12 +3,12 @@ import java.util.*;
 public class TestApp {
 
     public static void main(String[] args) {
-        Scanner s = new Scanner(System.in);
+        Scanner inputScanner = new Scanner(System.in);
         System.out.println("Enter your username:");
-        String username = s.nextLine();
+        String username = inputScanner.nextLine();
 
         System.out.println("Enter your password:");
-        String password = s.nextLine(); // 🔒 Hardcoded credentials or poor password handling
+        String password = inputScanner.nextLine(); // 🔒 Hardcoded credentials or poor password handling
 
         if (password.equals("admin123")) { // 🔐 Insecure password check
             System.out.println("Welcome, " + username);
