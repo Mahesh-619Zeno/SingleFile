@@ -15,7 +15,7 @@ def save_tasks(tasks):
 
 def show_tasks(tasks):
     if not tasks:
-        print("No tasks found.")
+        print("No tasks found or added.")
     for i, task in enumerate(tasks, 1):
         print(f"{i}. {task}")
 
