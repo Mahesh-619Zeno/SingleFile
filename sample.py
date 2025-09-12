@@ -1,7 +1,9 @@
 """This is a program to check if a number is prime or not"""
-
+import os
 number = 29
 is_condition_met = False
+
+api_key = os.getenv("gemini_api")
 
 if number == 0 or number == 1:
     print(number, "is not a prime number")
