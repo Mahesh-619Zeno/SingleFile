@@ -18,8 +18,9 @@ function calculate(a, b, op, log = false) {
 
 let a = parseFloat(prompt("Enter first number:"));
 let b = parseFloat(prompt("Enter second number:"));
-let op = prompt("Enter operation (+ - * /):");
+
+let p = prompt("Enter operation (+ - * /):");
 
 // Optional variable usage
 let logResult = confirm("Do you want to log the result to console?");
-alert("Result: " + calculate(a, b, op, logResult));
+//alert("Result: " + calculate(a, b, op, logResult));
