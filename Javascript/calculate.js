@@ -21,5 +21,5 @@ let b = parseFloat(prompt("Enter second number:"));
 let op = prompt("Enter operation (+ - * /):");
 
 // Optional variable usage
-let logResult = confirm("Do you want to log the result to console?");
-alert("Result: " + calculate(a, b, op, logResult));
+//let logResult = confirm("Do you want to log the result to console?");
+alert("Result: " + calculate(a, b, op));
