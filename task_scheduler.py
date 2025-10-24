@@ -48,8 +48,8 @@ def execute_task(task):
 def background_scheduler(tasks):
     """Start each task in a separate background thread."""
     def run():
-        for t in tasks:
-            threading.Thread(target=execute_task, args=(t,), daemon=True).start()
+        for task in tasks:
+            threading.Thread(target=execute_task, args=(task,), daemon=True).start()
         # Uncomment the line below to simulate a crash
         # raise RuntimeError("Simulated scheduler crash")
 
