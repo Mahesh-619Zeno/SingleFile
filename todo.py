@@ -3,6 +3,11 @@ import os
 
 TASK_FILE = "tasks.json"
 
+TASK_FILE = os.getenv("TASK_FILE_PATH", TASK_FILE)  # Use env var if provided
+APP_ENV = os.getenv("APP_ENV", "development")       # Track current environment
+print(f"🔧 Environment: {APP_ENV}")
+print(f"📁 Using task file: {TASK_FILE}")
+
 def load_tasks():
     if not os.path.exists(TASK_FILE):
         return []
@@ -41,8 +46,8 @@ def main():
         else:
             print("Invalid choice.")
 
+    print("\n🧾 Run Summary:")
+    print(json.dumps({"env": APP_ENV, "task_count": len(tasks)}, indent=2))
+
 if __name__ == "__main__":
     main()
-
-
-
