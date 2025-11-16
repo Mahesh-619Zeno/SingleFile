@@ -8,35 +8,43 @@ class Book:
 
     def __str__(self):
         status = "Issued" if self.is_issued else "Available"
-        return f"{self.title} by {self.author} [{status}]"
+        return f"'{self.title}' by {self.author} [{status}]"
 
 class Member:
     def __init__(self, name):
         self.name = name
-        self.borrowed = []
+        self.borrowed = {}
 
     def __str__(self):
-        return f"{self.name}, Borrowed: {', '.join(self.borrowed) or 'None'}"
+        borrowed_books = ', '.join(f"'{book}'" for book in self.borrowed.values()) or "None"
+        return f"{self.name}, Borrowed: {borrowed_books}"
 
 class Library:
     def __init__(self):
-        self.books = {}
-        self.members = {}
+        self.books = {}  # Book ID -> Book object
+        self.books_by_title = {}  # Title -> Book object
+        self.members = {}  # Member name -> Member object
         self.next_book_id = 1
 
     def add_book(self, title, author):
-        self.books[self.next_book_id] = Book(title, author)
-        print(f"Added book [{self.next_book_id}].")
+        book = Book(title, author)
+        self.books[self.next_book_id] = book
+        self.books_by_title[title.lower()] = book  # Store title in lowercase for case-insensitive lookup
+        print(f"Added book: '{title}' by {author}.")
         self.next_book_id += 1
 
     def register_member(self, name):
+        if name in self.members:
+            print(f"Member '{name}' is already registered.")
+            return
         self.members[name] = Member(name)
         print(f"Member '{name}' registered.")
 
     def list_books(self):
         if not self.books:
-            print("No books in library.")
+            print("No books in the library.")
             return
+        print("Books in the Library:")
         for id_, book in self.books.items():
             print(f"[{id_}] {book}")
 
@@ -44,37 +52,56 @@ class Library:
         if not self.members:
             print("No members registered.")
             return
+        print("Library Members:")
         for m in self.members.values():
             print(m)
 
-    def issue_book(self, member_name, book_id):
+    def issue_book(self, member_name, book_id_or_title):
         member = self.members.get(member_name)
-        book = self.books.get(book_id)
         if not member:
             print("Member not found.")
             return
+
+        book = self.books.get(book_id_or_title) if isinstance(book_id_or_title, int) else self.books_by_title.get(book_id_or_title.lower())
         if not book:
             print("Book not found.")
             return
+
         if book.is_issued:
             print("Book already issued.")
             return
+
+        if book.title in member.borrowed:
+            print(f"'{member_name}' has already borrowed '{book.title}'.")
+            return
+
         book.is_issued = True
-        member.borrowed.append(book.title)
+        member.borrowed[book_id_or_title] = book.title
         print(f"Issued '{book.title}' to '{member_name}'.")
 
-    def return_book(self, member_name, book_id):
+    def return_book(self, member_name, book_id_or_title):
         member = self.members.get(member_name)
-        book = self.books.get(book_id)
-        if not member or not book:
-            print("Invalid return request.")
+        if not member:
+            print("Member not found.")
             return
-        if book.title in member.borrowed:
-            book.is_issued = False
-            member.borrowed.remove(book.title)
-            print(f"Returned '{book.title}' from '{member_name}'.")
-        else:
-            print(f"'{member_name}' did not borrow this book.")
+
+        book = self.books.get(book_id_or_title) if isinstance(book_id_or_title, int) else self.books_by_title.get(book_id_or_title.lower())
+        if not book:
+            print("Book not found.")
+            return
+
+        if book.title not in member.borrowed.values():
+            print(f"'{member_name}' did not borrow '{book.title}'.")
+            return
+
+        book.is_issued = False
+        # Remove the book from the borrowed dictionary
+        for key, title in member.borrowed.items():
+            if title == book.title:
+                del member.borrowed[key]
+                break
+
+        print(f"Returned '{book.title}' from '{member_name}'.")
 
 def main():
     lib = Library()
@@ -95,12 +122,22 @@ def main():
             lib.list_members()
         elif choice == "5":
             name = input("Member Name: ")
-            bid = int(input("Book ID: "))
-            lib.issue_book(name, bid)
+            bid_or_title = input("Book ID or Title: ").strip()
+            # Try to convert to integer (if it's a book ID)
+            try:
+                bid_or_title = int(bid_or_title)
+            except ValueError:
+                pass
+            lib.issue_book(name, bid_or_title)
         elif choice == "6":
             name = input("Member Name: ")
-            bid = int(input("Book ID: "))
-            lib.return_book(name, bid)
+            bid_or_title = input("Book ID or Title: ").strip()
+            # Try to convert to integer (if it's a book ID)
+            try:
+                bid_or_title = int(bid_or_title)
+            except ValueError:
+                pass
+            lib.return_book(name, bid_or_title)
         elif choice == "7":
             print("Goodbye!")
             sys.exit()
